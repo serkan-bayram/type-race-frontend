@@ -1,38 +1,42 @@
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { Input } from "./components/ui/input";
 import "./index.css";
-import { cn } from "./lib/utils";
-
-// "kalem",
-// "dostluk",
-// "sevgi",
-// "deniz",
-// "güneş",
-// "ay",
-// "yıldız",
-// "çay",
-// "kahve",
-// "aile",
-// "okul",
-// "bahçe",
-// "sokak",
-// "şehir",
-// "dağ",
-// "ormam",
-// "göl",
-// "kuş",
-// "göz",
-// "mutluluk",
-// "huzur",
-// "rüya",
-// "çocuk",
-// "ev",
-// "masa",
-// "sandık",
-// "zaman",
+import { FadeOutBox } from "./components/fade-out-box";
+import { WordsContainer } from "./components/words-container";
 
 export default function App() {
-  const wordsList = ["merhaba", "elma", "kitap"];
+  const wordsList = [
+    "merhaba",
+    "elma",
+    "kitap",
+    "kalem",
+    "dostluk",
+    "sevgi",
+    "deniz",
+    "güneş",
+    "ay",
+    "yıldız",
+    "çay",
+    "kahve",
+    "aile",
+    "okul",
+    "bahçe",
+    "sokak",
+    "şehir",
+    "dağ",
+    "ormam",
+    "göl",
+    "kuş",
+    "göz",
+    "mutluluk",
+    "huzur",
+    "rüya",
+    "çocuk",
+    "ev",
+    "masa",
+    "sandık",
+    "zaman",
+  ];
 
   const [history, setHistory] = useState([""]);
   const historyLastIndex = history.length - 1;
@@ -80,69 +84,13 @@ export default function App() {
   };
 
   return (
-    <div className="w-full min-h-[100dvh] bg-background flex flex-col items-center justify-center">
+    <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
       <div className="flex w-[40%] h-16 overflow-x-hidden">
-        <div className="flex-1 z-10  h-full bg-gradient-to-r from-background from-30%"></div>
+        <FadeOutBox direction="bg-gradient-to-r" />
 
-        <div className="w-[200px] flex items-center">
-          {wordsList.map((word, wordIndex) => {
-            const letters = word.split("");
+        <WordsContainer history={history} wordsList={wordsList} />
 
-            const wordInHistory = history[wordIndex]
-              ? history[wordIndex]
-              : undefined;
-
-            const translateAmount = historyLastIndex * 200;
-
-            return (
-              <div
-                key={wordIndex}
-                style={{ translate: -translateAmount }}
-                className={cn(
-                  "flex-shrink-0 text-4xl transition-all  ease-in-out  w-[200px] flex justify-center"
-                )}
-              >
-                {letters.map((letter, letterIndex) => {
-                  let isTrue = false;
-                  let isFalse = false;
-
-                  if (wordInHistory) {
-                    isTrue =
-                      wordInHistory.charAt(letterIndex) ===
-                      word.charAt(letterIndex);
-
-                    // it can be false only if you passed that character
-                    if (
-                      wordInHistory.length > letterIndex &&
-                      historyLastIndex >= wordIndex
-                    ) {
-                      isFalse =
-                        wordInHistory?.charAt(letterIndex) !==
-                        word.charAt(letterIndex);
-                    }
-                  }
-
-                  return (
-                    <div
-                      key={letterIndex}
-                      className={cn(
-                        "font-semibold tracking-wide font-custom-noto",
-                        {
-                          "text-green-500": isTrue,
-                          "text-red-500": isFalse,
-                        }
-                      )}
-                    >
-                      {letter}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="flex-1 h-full z-10 bg-gradient-to-l from-background from-30%"></div>
+        <FadeOutBox direction="bg-gradient-to-l" />
       </div>
 
       <Input
@@ -150,7 +98,7 @@ export default function App() {
         onKeyDown={handleKeyDown}
         onChange={handleChange}
         placeholder="Press Space to move on"
-        className="w-[280px] mt-16"
+        className="w-[500px] text-lg py-6 mt-36 rounded-xl text-white placeholder:text-white bg-white/10 shadow-xl border-none"
       />
     </div>
   );
