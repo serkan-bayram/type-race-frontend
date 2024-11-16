@@ -36,18 +36,16 @@ export default function App() {
 
   return (
     <div className="w-full min-h-[100dvh] bg-background flex items-center justify-center">
-      <div className="w-[900px] mb-24 h-[150px] flex flex-wrap overflow-y-hidden gap-5 border text-3xl font-custom-noto  font-semibold">
-        {words.map((word, index) => {
-          const letters = word.split("");
-
-          return (
-            <div className="text-black/30 flex" key={index}>
-              {letters.map((letter, index) => (
-                <div className={index === 0 ? "capitalize" : ""}>{letter}</div>
-              ))}
+      <div className="flex w-[40%] h-16  overflow-x-hidden">
+        <div className="flex-1 h-full bg-gradient-to-r from-background from-30%"></div>
+        <div className="w-[200px] flex items-center">
+          {words.map((word) => (
+            <div className="flex-shrink-0 text-4xl capitalize w-[200px] text-center">
+              {word}
             </div>
-          );
-        })}
+          ))}
+        </div>
+        <div className="flex-1 h-full bg-gradient-to-l from-background from-30%"></div>
       </div>
     </div>
   );
