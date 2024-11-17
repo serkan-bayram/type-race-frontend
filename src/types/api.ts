@@ -1,4 +1,4 @@
-import { Game } from "@/routes/root";
+import { GameStatus } from "./types";
 
 // Return of /api/room/create
 export type RoomCreate = {
@@ -12,7 +12,7 @@ export type RoomGet = {
     createdAt: string;
     id: string;
     updatedAt: string | null;
-    status: Game;
+    status: GameStatus;
   };
   users: { id: string; userName: string; isRoomCreator: boolean }[];
 };

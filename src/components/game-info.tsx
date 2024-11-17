@@ -1,8 +1,21 @@
-import { Game } from "@/routes/root";
 import { useEffect, useState } from "react";
+import { useGetRoom, useUpdateRoomStatus } from "@/queries/queries";
+import { RoomGet } from "@/types/api";
 
 export function Timer() {
   const [timer, setTimer] = useState(60);
+
+  const mutation = useUpdateRoomStatus();
+
+  useEffect(() => {
+    // TODO: Now, everyone in room sends this request
+    // But only the one who is admin should send it
+    if (timer <= 0) {
+      mutation.mutate({
+        status: "finished",
+      });
+    }
+  }, [timer]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -32,11 +45,15 @@ export function Score() {
   );
 }
 
-export function GameInfo({ game }: { game: Game }) {
+export function GameInfo() {
+  const roomQuery = useGetRoom();
+
+  const roomStatus = (roomQuery.data?.data as RoomGet)?.room.status;
+
   return (
     <div className="flex flex-col items-center justify-center text-white font-custom-noto pb-36">
-      {game === "started" && <Timer />}
-      {game === "finished" && <Score />}
+      {roomStatus === "started" && <Timer />}
+      {roomStatus === "finished" && <Score />}
     </div>
   );
 }

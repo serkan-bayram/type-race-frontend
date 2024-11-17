@@ -1,30 +1,22 @@
+import { useGetRoom } from "@/queries/queries";
 import { RoomGet } from "@/types/api";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-
-export const getRoom = async ({ roomId }: { roomId: string }) => {
-  return axios.get(`${import.meta.env.VITE_API_URL}/room/${roomId}`);
-};
 
 export function RoomUsers() {
-  const { roomId } = useParams();
+  const { data } = useGetRoom();
 
-  const query = useQuery({
-    queryKey: ["get-room", roomId],
-    queryFn: () => getRoom({ roomId: roomId || "" }),
-  });
+  if (!data) return <div></div>;
 
-  if (!query.data) return <div></div>;
-
-  const results = query.data.data as RoomGet;
+  const results = data.data as RoomGet;
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 mt-20 font-custom-noto">
       <div className="text-xl font-bold text-white">Oyuncular</div>
       <div className="flex gap-12">
         {results.users.map((result) => (
-          <div className="flex flex-col h-24 p-3 text-white shadow-xl min-w-24 rounded-xl bg-white/10">
+          <div
+            key={result.id}
+            className="flex flex-col h-24 p-3 text-white shadow-xl min-w-24 rounded-xl bg-white/10"
+          >
             <div className="">{result.userName}</div>
             <div className="flex items-center justify-center flex-1 text-xl text-white ">
               24

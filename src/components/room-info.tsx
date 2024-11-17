@@ -6,13 +6,11 @@ import { toast } from "sonner";
 export function RoomInfo() {
   const { roomId } = useParams();
 
+  if (!roomId) return null;
+
   const handleCopy = () => {
-    if (roomId) {
-      copy(roomId);
-      toast.success("Oda Numarası kopyalandı");
-    } else {
-      toast.error("Bir şeyler ters gitti");
-    }
+    copy(roomId);
+    toast.success("Oda numarası kopyalandı");
   };
 
   return (

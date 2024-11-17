@@ -1,8 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "./ui/button";
-import axios from "axios";
-import { RoomCreate } from "@/types/api";
-import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -12,55 +8,24 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "./ui/input";
 import { FormEvent, useState } from "react";
-import { toast } from "sonner";
-
-export const createRoom = async ({ userName }: { userName: string }) => {
-  return axios.post(`${import.meta.env.VITE_API_URL}/room/create`, {
-    userName: userName,
-  });
-};
+import { useCreateRoom } from "@/queries/queries";
 
 export function CreateRoom() {
   const [open, setOpen] = useState(false);
 
-  const navigate = useNavigate();
-
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.error);
-      }
-    },
-    onSuccess: async (data, { userName }) => {
-      const { roomId, userId } = data.data as RoomCreate;
-
-      navigate(`/${roomId}`);
-
-      await queryClient.invalidateQueries({
-        queryKey: ["get-room", roomId],
-      });
-
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("userId", userId);
-
-      setOpen(false);
-    },
-    mutationKey: ["create-room"],
-    mutationFn: createRoom,
-  });
+  const mutation = useCreateRoom();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-
     const userName = formData.get("user-name");
 
     if (!userName) return;
 
     mutation.mutate({ userName: userName.toString() });
+
+    setOpen(false);
   };
 
   return (

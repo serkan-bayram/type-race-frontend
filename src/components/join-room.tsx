@@ -8,47 +8,12 @@ import {
 import { FormEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-
-const joinRoom = ({
-  roomId,
-  userName,
-}: {
-  roomId: string;
-  userName: string;
-}) => {
-  return axios.post(`${import.meta.env.VITE_API_URL}/room/join`, {
-    roomId: roomId,
-    userName: userName,
-  });
-};
+import { useJoinRoom } from "@/queries/queries";
 
 export function JoinRoom() {
   const [open, setOpen] = useState(false);
 
-  const navigate = useNavigate();
-
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    onSuccess: (_, { roomId }) => {
-      navigate(`/${roomId}`);
-
-      queryClient.invalidateQueries({ queryKey: ["get-room", roomId] });
-
-      setOpen(false);
-    },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.error);
-      }
-    },
-    mutationKey: ["join-room"],
-    mutationFn: joinRoom,
-  });
+  const mutation = useJoinRoom();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,15 +23,14 @@ export function JoinRoom() {
     const roomId = formData.get("room-id");
     const userName = formData.get("user-name");
 
-    if (roomId && userName) {
-      mutation.mutate({
-        roomId: roomId.toString(),
-        userName: userName.toString(),
-      });
-      return;
-    }
+    if (!roomId || !userName) return;
 
-    toast.error("Bir şeyler ters gitti");
+    mutation.mutate({
+      roomId: roomId.toString(),
+      userName: userName.toString(),
+    });
+
+    setOpen(false);
   };
 
   return (

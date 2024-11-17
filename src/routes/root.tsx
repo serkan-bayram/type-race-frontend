@@ -1,17 +1,14 @@
-import { ChangeEvent, KeyboardEvent, useState } from "react";
 import "@/index.css";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { FadeOutBox } from "@/components/fade-out-box";
 import { WordsContainer } from "@/components/words-container";
 import { CreateRoom } from "@/components/create-room";
 import { RoomInfo } from "@/components/room-info";
-import { useParams } from "react-router-dom";
 import { RoomUsers } from "@/components/room-users";
 import { JoinRoom } from "@/components/join-room";
 import { GameInfo } from "@/components/game-info";
 import { StartGame } from "@/components/start-game";
-
-export type Game = "notStarted" | "started" | "finished";
+import { WordInput } from "@/components/word-input";
 
 export default function Root() {
   const wordsList = [
@@ -48,53 +45,6 @@ export default function Root() {
   ];
 
   const [history, setHistory] = useState([""]);
-  const historyLastIndex = history.length - 1;
-
-  const [game, setGame] = useState<Game>("notStarted");
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace") {
-      if (history[historyLastIndex].length === 0 && history.length > 1) {
-        setHistory((history) => {
-          const historyCopy = [...history];
-
-          historyCopy.pop();
-
-          return historyCopy;
-        });
-      }
-    }
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newInput = e.target.value;
-
-    // If Space is pressed
-    if (
-      newInput.charAt(newInput.length - 1) === " " &&
-      history.length < wordsList.length
-    ) {
-      setHistory((history) => {
-        const historyCopy = [...history];
-
-        historyCopy.push("");
-
-        return historyCopy;
-      });
-
-      return;
-    }
-
-    setHistory((history) => {
-      const historyCopy = [...history];
-
-      historyCopy[historyLastIndex] = newInput;
-
-      return historyCopy;
-    });
-  };
-
-  const { roomId } = useParams();
 
   return (
     <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
@@ -102,9 +52,9 @@ export default function Root() {
         <CreateRoom />
         <JoinRoom />
       </div>
-      {roomId && <RoomInfo />}
+      <RoomInfo />
 
-      <GameInfo game={game} />
+      <GameInfo />
 
       <div className="flex w-[40%] h-16 overflow-x-hidden">
         <FadeOutBox direction="bg-gradient-to-r" />
@@ -114,15 +64,13 @@ export default function Root() {
         <FadeOutBox direction="bg-gradient-to-l" />
       </div>
 
-      <Input
-        value={history[historyLastIndex]}
-        onKeyDown={handleKeyDown}
-        onChange={handleChange}
-        placeholder="Yazmaya başla"
-        className="w-[500px] text-lg py-6 mt-12 rounded-xl text-white placeholder:text-white bg-white/10 shadow-xl border-none"
+      <WordInput
+        history={history}
+        setHistory={setHistory}
+        wordsList={wordsList}
       />
 
-      <StartGame setGame={setGame} />
+      <StartGame />
 
       <RoomUsers />
     </div>
