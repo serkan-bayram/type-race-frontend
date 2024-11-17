@@ -34,7 +34,7 @@ export function CreateRoom() {
       }
     },
     onSuccess: async (data, { userName }) => {
-      const { roomId, userId } = data.data as RoomCreate;
+      const { roomId } = data.data as RoomCreate;
 
       navigate(`/${roomId}`);
 
@@ -43,7 +43,6 @@ export function CreateRoom() {
         queryKey: ["get-room"],
       });
 
-      localStorage.setItem("userId", userId);
       localStorage.setItem("userName", userName);
 
       setOpen(false);
@@ -74,7 +73,12 @@ export function CreateRoom() {
           <DialogTitle className="mb-2">Bir kullanıcı adı gir</DialogTitle>
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <Input required name="user-name" placeholder="Kullanıcı adı" />
+          <Input
+            required
+            name="user-name"
+            value={localStorage.getItem("userName") || ""}
+            placeholder="Kullanıcı adı"
+          />
 
           <Button disabled={mutation.isPending}>Devam Et</Button>
         </form>

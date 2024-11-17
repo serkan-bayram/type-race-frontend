@@ -10,11 +10,40 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
+const joinRoom = ({
+  roomId,
+  userName,
+}: {
+  roomId: string;
+  userName: string;
+}) => {
+  return axios.post(`${import.meta.env.VITE_API_URL}/room/join`, {
+    roomId: roomId,
+    userName: userName,
+  });
+};
 
 export function JoinRoom() {
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  const mutation = useMutation({
+    onSuccess: (_, { roomId }) => {
+      navigate(`/${roomId}`);
+      setOpen(false);
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+      }
+    },
+    mutationKey: ["join-room"],
+    mutationFn: joinRoom,
+  });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,10 +52,12 @@ export function JoinRoom() {
 
     const roomId = formData.get("room-id");
     const userName = formData.get("user-name");
-    // TODO: Write an api to let user join a room
 
-    if (roomId) {
-      navigate(`/${roomId}`);
+    if (roomId && userName) {
+      mutation.mutate({
+        roomId: roomId.toString(),
+        userName: userName.toString(),
+      });
       return;
     }
 
@@ -46,9 +77,14 @@ export function JoinRoom() {
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input required name="room-id" placeholder="Oda numarası" />
-          <Input required name="user-name" placeholder="Kullanıcı adı" />
+          <Input
+            required
+            name="user-name"
+            value={localStorage.getItem("userName") || ""}
+            placeholder="Kullanıcı adı"
+          />
 
-          <Button>Devam Et</Button>
+          <Button disabled={mutation.isPending}>Devam Et</Button>
         </form>
       </DialogContent>
     </Dialog>
