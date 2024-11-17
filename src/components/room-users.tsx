@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const getRoom = async ({ roomId }: { roomId: string }) => {
+export const getRoom = async ({ roomId }: { roomId: string }) => {
   return axios.get(`${import.meta.env.VITE_API_URL}/room/${roomId}`);
 };
 
@@ -15,9 +15,9 @@ export function RoomUsers() {
     queryFn: () => getRoom({ roomId: roomId || "" }),
   });
 
-  const results = query.data?.data as RoomGet | undefined;
+  if (!query.data) return <div></div>;
 
-  if (!results) return <div></div>;
+  const results = query.data.data as RoomGet;
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 mt-20 font-custom-noto">

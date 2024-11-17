@@ -8,6 +8,10 @@ import { RoomInfo } from "@/components/room-info";
 import { useParams } from "react-router-dom";
 import { RoomUsers } from "@/components/room-users";
 import { JoinRoom } from "@/components/join-room";
+import { GameInfo } from "@/components/game-info";
+import { StartGame } from "@/components/start-game";
+
+export type Game = "notStarted" | "started" | "finished";
 
 export default function Root() {
   const wordsList = [
@@ -45,6 +49,8 @@ export default function Root() {
 
   const [history, setHistory] = useState([""]);
   const historyLastIndex = history.length - 1;
+
+  const [game, setGame] = useState<Game>("notStarted");
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace") {
@@ -91,12 +97,14 @@ export default function Root() {
   const { roomId } = useParams();
 
   return (
-    <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center pt-36">
+    <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
       <div className="absolute flex items-center top-12 left-12 gap-x-6">
         <CreateRoom />
         <JoinRoom />
       </div>
       {roomId && <RoomInfo />}
+
+      <GameInfo game={game} />
 
       <div className="flex w-[40%] h-16 overflow-x-hidden">
         <FadeOutBox direction="bg-gradient-to-r" />
@@ -113,6 +121,8 @@ export default function Root() {
         placeholder="Yazmaya başla"
         className="w-[500px] text-lg py-6 mt-12 rounded-xl text-white placeholder:text-white bg-white/10 shadow-xl border-none"
       />
+
+      <StartGame setGame={setGame} />
 
       <RoomUsers />
     </div>

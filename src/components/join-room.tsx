@@ -10,7 +10,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const joinRoom = ({
@@ -31,14 +31,19 @@ export function JoinRoom() {
 
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     onSuccess: (_, { roomId }) => {
       navigate(`/${roomId}`);
+
+      queryClient.invalidateQueries({ queryKey: ["get-room", roomId] });
+
       setOpen(false);
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message);
+        toast.error(error.response?.data.error);
       }
     },
     mutationKey: ["join-room"],
@@ -80,7 +85,7 @@ export function JoinRoom() {
           <Input
             required
             name="user-name"
-            value={localStorage.getItem("userName") || ""}
+            defaultValue={localStorage.getItem("userName") || ""}
             placeholder="Kullanıcı adı"
           />
 

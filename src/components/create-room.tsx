@@ -34,16 +34,16 @@ export function CreateRoom() {
       }
     },
     onSuccess: async (data, { userName }) => {
-      const { roomId } = data.data as RoomCreate;
+      const { roomId, userId } = data.data as RoomCreate;
 
       navigate(`/${roomId}`);
 
-      // I don't think this works
       await queryClient.invalidateQueries({
-        queryKey: ["get-room"],
+        queryKey: ["get-room", roomId],
       });
 
       localStorage.setItem("userName", userName);
+      localStorage.setItem("userId", userId);
 
       setOpen(false);
     },
@@ -76,7 +76,7 @@ export function CreateRoom() {
           <Input
             required
             name="user-name"
-            value={localStorage.getItem("userName") || ""}
+            defaultValue={localStorage.getItem("userName") || ""}
             placeholder="Kullanıcı adı"
           />
 
