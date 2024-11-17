@@ -48,7 +48,7 @@ export default {
         },
       },
       fontFamily: {
-        "custom-noto": ['Noto Sans Mono"'],
+        "custom-noto": ['"Noto Sans Mono"'],
       },
       borderRadius: {
         lg: "var(--radius)",

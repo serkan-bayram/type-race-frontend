@@ -52,7 +52,7 @@ export function WordsContainer({
                 <div
                   key={letterIndex}
                   className={cn(
-                    "font-semibold tracking-wide font-custom-noto",
+                    "font-semibold tracking-wide transition-all ease-in-out font-custom-noto",
                     {
                       "text-white": isTrue,
                       "text-red-500": isFalse,

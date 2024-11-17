@@ -1,12 +1,15 @@
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import { Input } from "./components/ui/input";
-import "./index.css";
-import { FadeOutBox } from "./components/fade-out-box";
-import { WordsContainer } from "./components/words-container";
-import { Button } from "./components/ui/button";
-import { CreateRoom } from "./components/create-room";
+import "@/index.css";
+import { Input } from "@/components/ui/input";
+import { FadeOutBox } from "@/components/fade-out-box";
+import { WordsContainer } from "@/components/words-container";
+import { CreateRoom } from "@/components/create-room";
+import { RoomInfo } from "@/components/room-info";
+import { useParams } from "react-router-dom";
+import { RoomUsers } from "@/components/room-users";
+import { JoinRoom } from "@/components/join-room";
 
-export default function App() {
+export default function Root() {
   const wordsList = [
     "merhaba",
     "elma",
@@ -85,9 +88,15 @@ export default function App() {
     });
   };
 
+  const { roomId } = useParams();
+
   return (
-    <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
-      <CreateRoom />
+    <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center pt-36">
+      <div className="absolute flex items-center top-12 left-12 gap-x-6">
+        <CreateRoom />
+        <JoinRoom />
+      </div>
+      {roomId && <RoomInfo />}
 
       <div className="flex w-[40%] h-16 overflow-x-hidden">
         <FadeOutBox direction="bg-gradient-to-r" />
@@ -102,8 +111,10 @@ export default function App() {
         onKeyDown={handleKeyDown}
         onChange={handleChange}
         placeholder="Yazmaya başla"
-        className="w-[500px] text-lg py-6 mt-36 rounded-xl text-white placeholder:text-white bg-white/10 shadow-xl border-none"
+        className="w-[500px] text-lg py-6 mt-12 rounded-xl text-white placeholder:text-white bg-white/10 shadow-xl border-none"
       />
+
+      <RoomUsers />
     </div>
   );
 }
