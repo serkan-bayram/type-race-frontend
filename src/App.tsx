@@ -3,6 +3,8 @@ import { Input } from "./components/ui/input";
 import "./index.css";
 import { FadeOutBox } from "./components/fade-out-box";
 import { WordsContainer } from "./components/words-container";
+import { Button } from "./components/ui/button";
+import { CreateRoom } from "./components/create-room";
 
 export default function App() {
   const wordsList = [
@@ -85,6 +87,8 @@ export default function App() {
 
   return (
     <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
+      <CreateRoom />
+
       <div className="flex w-[40%] h-16 overflow-x-hidden">
         <FadeOutBox direction="bg-gradient-to-r" />
 
@@ -97,7 +101,7 @@ export default function App() {
         value={history[historyLastIndex]}
         onKeyDown={handleKeyDown}
         onChange={handleChange}
-        placeholder="Press Space to move on"
+        placeholder="Yazmaya başla"
         className="w-[500px] text-lg py-6 mt-36 rounded-xl text-white placeholder:text-white bg-white/10 shadow-xl border-none"
       />
     </div>
