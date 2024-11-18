@@ -1,3 +1,4 @@
+import { socket } from "@/socket";
 import { RoomCreate } from "@/types/api";
 import { GameStatus } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,6 +16,9 @@ export function useJoinRoom() {
     onSuccess: (_, { roomId }) => {
       navigate(`/${roomId}`);
       queryClient.invalidateQueries({ queryKey: ["get-room", roomId] });
+
+      socket.connect();
+      socket.emit("joinRoom", roomId);
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
@@ -51,6 +55,9 @@ export function useCreateRoom() {
 
       localStorage.setItem("userName", userName);
       localStorage.setItem("userId", userId);
+
+      socket.connect();
+      socket.emit("joinRoom", roomId);
     },
     mutationKey: ["create-room"],
     mutationFn: ({ userName }: { userName: string }) =>
