@@ -14,10 +14,8 @@ const router = createBrowserRouter([
     path: "/:roomId?",
     element: (
       <>
-        <GameStatusProvider>
-          <Toaster />
-          <Root />
-        </GameStatusProvider>
+        <Toaster />
+        <Root />
       </>
     ),
   },

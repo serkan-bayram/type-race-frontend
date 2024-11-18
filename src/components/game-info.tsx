@@ -1,45 +1,13 @@
-import { useEffect, useState } from "react";
-import { useUpdateRoomStatus } from "@/queries/queries";
-import { useGameStatus } from "@/lib/game-status-context";
-import { useParams } from "react-router-dom";
+import { useRoomSocket } from "@/hooks";
 
 export function Timer() {
-  const [timer, setTimer] = useState(60);
+  const { room } = useRoomSocket();
 
-  const mutation = useUpdateRoomStatus();
-
-  const { setGameStatus } = useGameStatus();
-
-  const { roomId } = useParams();
-
-  useEffect(() => {
-    // TODO: Now, everyone in room sends this request
-    // But only the one who is admin should send it
-    if (timer <= 0) {
-      if (roomId) {
-        mutation.mutate({
-          status: "finished",
-        });
-      } else {
-        setGameStatus("finished");
-      }
-    }
-  }, [timer]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer((time) => {
-        if (time >= 1) return time - 1;
-        else return time;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  if (!room) return null;
 
   return (
     <>
-      <div className="text-2xl font-semibold">{timer}</div>
+      <div className="text-2xl font-semibold">{room.secondsLeft}</div>
       <div>saniye kaldı</div>
     </>
   );
@@ -55,12 +23,12 @@ export function Score() {
 }
 
 export function GameInfo() {
-  const { gameStatus } = useGameStatus();
+  const { room } = useRoomSocket();
 
   return (
     <div className="absolute flex flex-col items-center justify-center text-white font-custom-noto top-36">
-      {gameStatus === "started" && <Timer />}
-      {gameStatus === "finished" && <Score />}
+      {room?.status === "started" && <Timer />}
+      {room?.status === "finished" && <Score />}
     </div>
   );
 }

@@ -5,17 +5,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { socket } from "@/socket";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function JoinRoom() {
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  const { roomId } = useParams();
+
+  useEffect(() => {
+    if (socket.disconnected && roomId) {
+      setOpen(true);
+    }
+  }, [roomId]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,7 +35,10 @@ export function JoinRoom() {
 
     if (!roomId || !userName) return;
 
+    localStorage.setItem("userName", userName.toString());
+
     // Connect to websocket and send your userName
+    socket.disconnect();
     socket.connect();
     socket.emit("joinRoom", { userName: userName, roomId: roomId });
 
@@ -55,7 +66,12 @@ export function JoinRoom() {
           <DialogTitle className="mb-2">Bir oda numarası gir</DialogTitle>
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <Input required name="room-id" placeholder="Oda numarası" />
+          <Input
+            required
+            name="room-id"
+            defaultValue={roomId}
+            placeholder="Oda numarası"
+          />
           <Input
             required
             name="user-name"

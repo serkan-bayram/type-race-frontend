@@ -11,7 +11,7 @@ export function StartGame() {
 
   const currentUser = room.users.find((user) => user.id === socket.id);
 
-  if (!currentUser?.isCreator) return null;
+  if (!currentUser?.isCreator || room.status) return null;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

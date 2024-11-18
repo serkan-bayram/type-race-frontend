@@ -24,7 +24,10 @@ export function CreateRoom() {
 
     if (!userName) return;
 
+    localStorage.setItem("userName", userName.toString());
+
     // Connect to websocket and send your userName
+    socket.disconnect();
     socket.connect();
     socket.emit("createRoom", { userName: userName });
 

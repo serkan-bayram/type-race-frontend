@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { socket } from "./socket";
 
+type GameStatus = "started" | "finished";
+
 type Room = {
   roomId: string;
+  secondsLeft: number;
+  status?: GameStatus;
   users: { userName: string; id: string; isCreator: boolean }[];
 };
 
