@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "./ui/input";
 import { FormEvent, useState } from "react";
-import { useCreateRoom } from "@/queries/queries";
+import { socket } from "@/socket";
+import { useNavigate } from "react-router-dom";
 
 export function CreateRoom() {
   const [open, setOpen] = useState(false);
 
-  const mutation = useCreateRoom();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,9 +24,19 @@ export function CreateRoom() {
 
     if (!userName) return;
 
-    mutation.mutate({ userName: userName.toString() });
+    localStorage.setItem("userName", userName.toString());
 
-    setOpen(false);
+    // Connect to websocket and send your userName
+    socket.disconnect();
+    socket.connect();
+    socket.emit("createRoom", { userName: userName });
+
+    // Navigate to roomId when room is created
+    socket.on("createRoom", (roomId) => {
+      navigate(`/${roomId}`);
+
+      setOpen(false);
+    });
   };
 
   return (
@@ -45,7 +56,7 @@ export function CreateRoom() {
             placeholder="Kullanıcı adı"
           />
 
-          <Button disabled={mutation.isPending}>Devam Et</Button>
+          <Button>Devam Et</Button>
         </form>
       </DialogContent>
     </Dialog>

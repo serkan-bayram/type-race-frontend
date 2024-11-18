@@ -8,12 +8,15 @@ import {
 import { FormEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useJoinRoom } from "@/queries/queries";
+import { socket } from "@/socket";
+import { toast } from "sonner";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function JoinRoom() {
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const mutation = useJoinRoom();
+  const { roomId } = useParams();
+  const [open, setOpen] = useState(!!roomId ? socket.disconnected : false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,9 +28,20 @@ export function JoinRoom() {
 
     if (!roomId || !userName) return;
 
-    mutation.mutate({
-      roomId: roomId.toString(),
-      userName: userName.toString(),
+    localStorage.setItem("userName", userName.toString());
+
+    // Connect to websocket and send your userName
+    socket.disconnect();
+    socket.connect();
+    socket.emit("joinRoom", { userName: userName, roomId: roomId });
+
+    socket.on("joinRoom", (response) => {
+      if (response !== "Success") {
+        toast.error(response);
+        return;
+      }
+
+      navigate(`/${roomId}`);
     });
 
     setOpen(false);
@@ -45,7 +59,12 @@ export function JoinRoom() {
           <DialogTitle className="mb-2">Bir oda numarası gir</DialogTitle>
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <Input required name="room-id" placeholder="Oda numarası" />
+          <Input
+            required
+            name="room-id"
+            defaultValue={roomId}
+            placeholder="Oda numarası"
+          />
           <Input
             required
             name="user-name"
@@ -53,7 +72,7 @@ export function JoinRoom() {
             placeholder="Kullanıcı adı"
           />
 
-          <Button disabled={mutation.isPending}>Devam Et</Button>
+          <Button>Devam Et</Button>
         </form>
       </DialogContent>
     </Dialog>

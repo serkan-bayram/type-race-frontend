@@ -1,3 +1,4 @@
+import { socket } from "@/socket";
 import copy from "copy-to-clipboard";
 import { ClipboardIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
@@ -5,6 +6,8 @@ import { toast } from "sonner";
 
 export function RoomInfo() {
   const { roomId } = useParams();
+
+  if (socket.disconnected) return null;
 
   if (!roomId) return null;
 

@@ -1,7 +1,7 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction } from "react";
 import { Input } from "./ui/input";
-import { useParams } from "react-router-dom";
-import { useGameStatus } from "@/lib/game-status-context";
+import { useRoomSocket } from "@/hooks";
+import { toast } from "sonner";
 
 export function WordInput({
   history,
@@ -12,9 +12,7 @@ export function WordInput({
   setHistory: Dispatch<SetStateAction<string[]>>;
   wordsList: string[];
 }) {
-  const { gameStatus, setGameStatus } = useGameStatus();
-
-  const { roomId } = useParams();
+  const { room } = useRoomSocket();
 
   const historyLastIndex = history.length - 1;
 
@@ -34,10 +32,6 @@ export function WordInput({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newInput = e.target.value;
-
-    if (history.length === 1) {
-      setGameStatus("started");
-    }
 
     // If Space is pressed
     if (
@@ -64,9 +58,20 @@ export function WordInput({
     });
   };
 
+  const handleMouseOver = () => {
+    if (!room) {
+      toast.info("Create a room or join one to start");
+    } else {
+      if (!room?.status) {
+        toast.info("Game has not started yet");
+      }
+    }
+  };
+
   return (
     <Input
-      disabled={roomId ? gameStatus !== "started" : false}
+      onMouseOver={handleMouseOver}
+      disabled={room?.status !== "started"}
       value={history[historyLastIndex]}
       onKeyDown={handleKeyDown}
       onChange={handleChange}
