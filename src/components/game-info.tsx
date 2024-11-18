@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
-import { useGetRoom, useUpdateRoomStatus } from "@/queries/queries";
-import { RoomGet } from "@/types/api";
+import { useUpdateRoomStatus } from "@/queries/queries";
+import { useGameStatus } from "@/lib/game-status-context";
+import { useParams } from "react-router-dom";
 
 export function Timer() {
   const [timer, setTimer] = useState(60);
 
   const mutation = useUpdateRoomStatus();
 
+  const { setGameStatus } = useGameStatus();
+
+  const { roomId } = useParams();
+
   useEffect(() => {
     // TODO: Now, everyone in room sends this request
     // But only the one who is admin should send it
     if (timer <= 0) {
-      mutation.mutate({
-        status: "finished",
-      });
+      if (roomId) {
+        mutation.mutate({
+          status: "finished",
+        });
+      } else {
+        setGameStatus("finished");
+      }
     }
   }, [timer]);
 
@@ -46,14 +55,12 @@ export function Score() {
 }
 
 export function GameInfo() {
-  const roomQuery = useGetRoom();
-
-  const roomStatus = (roomQuery.data?.data as RoomGet)?.room.status;
+  const { gameStatus } = useGameStatus();
 
   return (
-    <div className="flex flex-col items-center justify-center text-white font-custom-noto pb-36">
-      {roomStatus === "started" && <Timer />}
-      {roomStatus === "finished" && <Score />}
+    <div className="absolute flex flex-col items-center justify-center text-white font-custom-noto top-36">
+      {gameStatus === "started" && <Timer />}
+      {gameStatus === "finished" && <Score />}
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction } from "react";
 import { Input } from "./ui/input";
+import { useParams } from "react-router-dom";
+import { useGameStatus } from "@/lib/game-status-context";
 
 export function WordInput({
   history,
@@ -10,6 +12,10 @@ export function WordInput({
   setHistory: Dispatch<SetStateAction<string[]>>;
   wordsList: string[];
 }) {
+  const { gameStatus, setGameStatus } = useGameStatus();
+
+  const { roomId } = useParams();
+
   const historyLastIndex = history.length - 1;
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -28,6 +34,10 @@ export function WordInput({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newInput = e.target.value;
+
+    if (history.length === 1) {
+      setGameStatus("started");
+    }
 
     // If Space is pressed
     if (
@@ -56,6 +66,7 @@ export function WordInput({
 
   return (
     <Input
+      disabled={roomId ? gameStatus !== "started" : false}
       value={history[historyLastIndex]}
       onKeyDown={handleKeyDown}
       onChange={handleChange}

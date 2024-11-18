@@ -5,20 +5,27 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./routes/root.tsx";
 import { Toaster } from "sonner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { GameStatusProvider } from "./lib/game-status-context.tsx";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: "/:roomId?",
-    element: <Root />,
+    element: (
+      <>
+        <GameStatusProvider>
+          <Toaster />
+          <Root />
+        </GameStatusProvider>
+      </>
+    ),
   },
 ]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Toaster />
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

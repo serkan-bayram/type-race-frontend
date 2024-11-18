@@ -18,7 +18,7 @@ export function useJoinRoom() {
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.error);
+        toast.error(error.response?.data.message);
       }
     },
     mutationKey: ["join-room"],
@@ -37,7 +37,7 @@ export function useCreateRoom() {
   return useMutation({
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.error);
+        toast.error(error.response?.data.message);
       }
     },
     onSuccess: async (data, { userName }) => {
@@ -84,6 +84,7 @@ export function useGetRoom() {
   const { roomId } = useParams();
 
   return useQuery({
+    enabled: !!roomId,
     queryKey: ["get-room", roomId],
     queryFn: () => axios.get(`/room/${roomId}`),
   });

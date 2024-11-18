@@ -9,7 +9,7 @@ export function RoomUsers() {
   const results = data.data as RoomGet;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8 mt-20 font-custom-noto">
+    <div className="absolute flex flex-col items-center justify-center gap-8 bottom-32 font-custom-noto">
       <div className="text-xl font-bold text-white">Oyuncular</div>
       <div className="flex gap-12">
         {results.users.map((result) => (
