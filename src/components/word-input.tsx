@@ -1,6 +1,5 @@
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction } from "react";
 import { Input } from "./ui/input";
-import { useParams } from "react-router-dom";
 import { useRoomSocket } from "@/hooks";
 import { toast } from "sonner";
 
@@ -13,8 +12,6 @@ export function WordInput({
   setHistory: Dispatch<SetStateAction<string[]>>;
   wordsList: string[];
 }) {
-  const { roomId } = useParams();
-
   const { room } = useRoomSocket();
 
   const historyLastIndex = history.length - 1;
@@ -62,8 +59,12 @@ export function WordInput({
   };
 
   const handleMouseOver = () => {
-    if (!roomId) {
-      toast.info("Create a room to start");
+    if (!room) {
+      toast.info("Create a room or join one to start");
+    } else {
+      if (!room?.status) {
+        toast.info("Game has not started yet");
+      }
     }
   };
 

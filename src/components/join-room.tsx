@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { socket } from "@/socket";
@@ -13,17 +13,10 @@ import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
 
 export function JoinRoom() {
-  const [open, setOpen] = useState(false);
-
   const navigate = useNavigate();
 
   const { roomId } = useParams();
-
-  useEffect(() => {
-    if (socket.disconnected && roomId) {
-      setOpen(true);
-    }
-  }, [roomId]);
+  const [open, setOpen] = useState(!!roomId ? socket.disconnected : false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
