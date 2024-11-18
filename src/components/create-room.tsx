@@ -8,14 +8,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "./ui/input";
 import { FormEvent, useState } from "react";
-import { useCreateRoom } from "@/queries/queries";
 import { socket } from "@/socket";
 import { useNavigate } from "react-router-dom";
 
 export function CreateRoom() {
   const [open, setOpen] = useState(false);
-
-  const mutation = useCreateRoom();
 
   const navigate = useNavigate();
 
@@ -29,7 +26,7 @@ export function CreateRoom() {
 
     // Connect to websocket and send your userName
     socket.connect();
-    socket.emit("createRoom", userName);
+    socket.emit("createRoom", { userName: userName });
 
     // Navigate to roomId when room is created
     socket.on("createRoom", (roomId) => {
@@ -56,7 +53,7 @@ export function CreateRoom() {
             placeholder="Kullanıcı adı"
           />
 
-          <Button disabled={mutation.isPending}>Devam Et</Button>
+          <Button>Devam Et</Button>
         </form>
       </DialogContent>
     </Dialog>

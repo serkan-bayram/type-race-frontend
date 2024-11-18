@@ -8,15 +8,12 @@ import {
 import { FormEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useJoinRoom } from "@/queries/queries";
 import { socket } from "@/socket";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 export function JoinRoom() {
   const [open, setOpen] = useState(false);
-
-  const mutation = useJoinRoom();
 
   const navigate = useNavigate();
 
@@ -43,18 +40,6 @@ export function JoinRoom() {
       navigate(`/${roomId}`);
     });
 
-    // // Navigate to roomId when room is created
-    // socket.on("roomCreated", (roomId) => {
-    //   navigate(`/${roomId}`);
-
-    //   setOpen(false);
-    // });
-
-    // mutation.mutate({
-    //   roomId: roomId.toString(),
-    //   userName: userName.toString(),
-    // });
-
     setOpen(false);
   };
 
@@ -78,7 +63,7 @@ export function JoinRoom() {
             placeholder="Kullanıcı adı"
           />
 
-          <Button disabled={mutation.isPending}>Devam Et</Button>
+          <Button>Devam Et</Button>
         </form>
       </DialogContent>
     </Dialog>

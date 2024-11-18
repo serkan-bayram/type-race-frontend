@@ -1,17 +1,9 @@
-import { socket } from "@/socket";
-import { useState } from "react";
-
-type Room = {
-  roomId: string;
-  users: { userName: string; id: string; isCreator: boolean }[];
-};
+import { useRoomSocket } from "@/hooks";
 
 export function RoomUsers() {
-  const [room, setRoom] = useState<undefined | Room>();
+  const { room } = useRoomSocket();
 
-  socket.on("roomInfo", (room) => {
-    setRoom(room);
-  });
+  if (!room) return null;
 
   return (
     <div className="absolute flex flex-col items-center justify-center gap-8 bottom-32 font-custom-noto">

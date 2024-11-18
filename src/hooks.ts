@@ -1,0 +1,17 @@
+import { useState } from "react";
+import { socket } from "./socket";
+
+type Room = {
+  roomId: string;
+  users: { userName: string; id: string; isCreator: boolean }[];
+};
+
+export function useRoomSocket() {
+  const [room, setRoom] = useState<undefined | Room>();
+
+  socket.on("roomInfo", (room) => {
+    setRoom(room);
+  });
+
+  return { room, setRoom };
+}

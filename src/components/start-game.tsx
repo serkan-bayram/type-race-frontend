@@ -1,37 +1,34 @@
 import { FormEvent } from "react";
 import { Button } from "./ui/button";
-import { RoomGet } from "@/types/api";
-import { useGetRoom, useUpdateRoomStatus } from "@/queries/queries";
+import { useRoomSocket } from "@/hooks";
+import { socket } from "@/socket";
+import { toast } from "sonner";
 
 export function StartGame() {
-  const query = useGetRoom();
+  const { room } = useRoomSocket();
 
-  const mutation = useUpdateRoomStatus();
+  if (!room) return null;
+
+  const currentUser = room.users.find((user) => user.id === socket.id);
+
+  if (!currentUser?.isCreator) return null;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    mutation.mutate({
-      status: "started",
+    socket.emit("startGame", { roomId: room.roomId });
+
+    socket.on("startGame", (response) => {
+      if (response !== "Success") {
+        toast.error(response);
+        return;
+      }
     });
   };
 
-  if (!query.data) return null;
-
-  const results = query.data.data as RoomGet;
-
-  const currentUser = results.users.find(
-    (user) => user.id === localStorage.getItem("userId")
-  );
-
-  if (!currentUser?.isRoomCreator || results.room.status !== "notStarted")
-    return null;
-
   return (
     <form onSubmit={handleSubmit} className="absolute bottom-12 left-12">
-      <Button disabled={mutation.isPending} variant={"secondary"}>
-        Oyunu Başlat
-      </Button>
+      <Button variant={"secondary"}>Oyunu Başlat</Button>
     </form>
   );
 }
