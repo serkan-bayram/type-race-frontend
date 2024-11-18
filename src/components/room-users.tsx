@@ -1,23 +1,28 @@
-import { useGetRoom } from "@/queries/queries";
-import { RoomGet } from "@/types/api";
+import { socket } from "@/socket";
+import { useState } from "react";
+
+type Room = {
+  roomId: string;
+  users: { userName: string; id: string; isCreator: boolean }[];
+};
 
 export function RoomUsers() {
-  const { data } = useGetRoom();
+  const [room, setRoom] = useState<undefined | Room>();
 
-  if (!data) return <div></div>;
-
-  const results = data.data as RoomGet;
+  socket.on("roomInfo", (room) => {
+    setRoom(room);
+  });
 
   return (
     <div className="absolute flex flex-col items-center justify-center gap-8 bottom-32 font-custom-noto">
       <div className="text-xl font-bold text-white">Oyuncular</div>
       <div className="flex gap-12">
-        {results.users.map((result) => (
+        {room?.users.map((user) => (
           <div
-            key={result.id}
+            key={user.id}
             className="flex flex-col h-24 p-3 text-white shadow-xl min-w-24 rounded-xl bg-white/10"
           >
-            <div className="">{result.userName}</div>
+            <div className="">{user.userName}</div>
             <div className="flex items-center justify-center flex-1 text-xl text-white ">
               24
             </div>

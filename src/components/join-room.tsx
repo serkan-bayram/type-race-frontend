@@ -9,11 +9,16 @@ import { FormEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useJoinRoom } from "@/queries/queries";
+import { socket } from "@/socket";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export function JoinRoom() {
   const [open, setOpen] = useState(false);
 
   const mutation = useJoinRoom();
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,10 +30,30 @@ export function JoinRoom() {
 
     if (!roomId || !userName) return;
 
-    mutation.mutate({
-      roomId: roomId.toString(),
-      userName: userName.toString(),
+    // Connect to websocket and send your userName
+    socket.connect();
+    socket.emit("joinRoom", { userName: userName, roomId: roomId });
+
+    socket.on("joinRoom", (response) => {
+      if (response !== "Success") {
+        toast.error(response);
+        return;
+      }
+
+      navigate(`/${roomId}`);
     });
+
+    // // Navigate to roomId when room is created
+    // socket.on("roomCreated", (roomId) => {
+    //   navigate(`/${roomId}`);
+
+    //   setOpen(false);
+    // });
+
+    // mutation.mutate({
+    //   roomId: roomId.toString(),
+    //   userName: userName.toString(),
+    // });
 
     setOpen(false);
   };
