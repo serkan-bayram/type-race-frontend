@@ -1,4 +1,6 @@
 import { useRoomSocket } from "@/hooks";
+import { cn } from "@/lib/utils";
+import { socket } from "@/socket";
 
 export function RoomUsers() {
   const { room } = useRoomSocket();
@@ -12,7 +14,10 @@ export function RoomUsers() {
         {room?.users.map((user) => (
           <div
             key={user.id}
-            className="flex flex-col flex-shrink-0 h-24 p-3 overflow-x-hidden text-white shadow-xl min-w-24 rounded-xl bg-white/10 "
+            className={cn(
+              "flex flex-col flex-shrink-0 h-24 p-3 overflow-x-hidden text-white shadow-xl min-w-24 rounded-xl bg-white/10",
+              { "border border-purple-700": user.id === socket.id }
+            )}
           >
             <div className="">{user.userName.slice(0, 15)}</div>
             <div className="flex items-center justify-center flex-1 text-xl text-white ">

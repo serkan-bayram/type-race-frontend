@@ -49,7 +49,7 @@ export function useStartGameSocket() {
 
       const promise = new Promise((resolve) => setTimeout(resolve, 3000));
 
-      toast.promise(promise, { loading: "Game is starting in 3 seconds." });
+      toast.promise(promise, { loading: "Game is starting in 3 seconds" });
     };
 
     socket.on("startGame", handleSocket);
