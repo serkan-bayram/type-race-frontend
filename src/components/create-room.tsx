@@ -42,21 +42,21 @@ export function CreateRoom() {
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-        <Button variant={"secondary"}>Oda Oluştur</Button>
+        <Button variant={"secondary"}>Create Room</Button>
       </DialogTrigger>
       <DialogContent className="max-w-[400px]">
         <DialogHeader>
-          <DialogTitle className="mb-2">Bir kullanıcı adı gir</DialogTitle>
+          <DialogTitle className="mb-2">Enter a username</DialogTitle>
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
             required
             name="user-name"
             defaultValue={localStorage.getItem("userName") || ""}
-            placeholder="Kullanıcı adı"
+            placeholder="Username"
           />
 
-          <Button>Devam Et</Button>
+          <Button>Continue</Button>
         </form>
       </DialogContent>
     </Dialog>

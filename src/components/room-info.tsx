@@ -13,12 +13,12 @@ export function RoomInfo() {
 
   const handleCopy = () => {
     copy(roomId);
-    toast.success("Oda numarası kopyalandı");
+    toast.success("Room number is copied");
   };
 
   return (
     <div className="absolute flex flex-col p-4 py-2 text-white shadow-xl gap-y-2 font-custom-noto rounded-xl bg-white/10 right-12 top-12 max-w-48">
-      <div className="text-xs font-semibold">Oda Numarası</div>
+      <div className="text-xs font-semibold">Room number</div>
       <button
         onClick={handleCopy}
         className="flex items-center max-w-full gap-x-2"

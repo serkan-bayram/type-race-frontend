@@ -75,7 +75,7 @@ export function WordInput({
       value={history[historyLastIndex]}
       onKeyDown={handleKeyDown}
       onChange={handleChange}
-      placeholder="Yazmaya başla"
+      placeholder="Start typing"
       className="w-[500px] text-lg py-6 mt-12 rounded-xl text-white placeholder:text-white bg-white/10 shadow-xl border-none"
     />
   );

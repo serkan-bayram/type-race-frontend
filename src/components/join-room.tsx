@@ -51,28 +51,28 @@ export function JoinRoom() {
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
         <Button className="text-white" variant={"link"}>
-          Bir Odaya Katıl
+          Join a Room
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[400px]">
         <DialogHeader>
-          <DialogTitle className="mb-2">Bir oda numarası gir</DialogTitle>
+          <DialogTitle className="mb-2">Enter a room number</DialogTitle>
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
             required
             name="room-id"
             defaultValue={roomId}
-            placeholder="Oda numarası"
+            placeholder="Room number"
           />
           <Input
             required
             name="user-name"
             defaultValue={localStorage.getItem("userName") || ""}
-            placeholder="Kullanıcı adı"
+            placeholder="Username"
           />
 
-          <Button>Devam Et</Button>
+          <Button>Continue</Button>
         </form>
       </DialogContent>
     </Dialog>
