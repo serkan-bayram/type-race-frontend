@@ -76,7 +76,7 @@ export function WordInput({
       onKeyDown={handleKeyDown}
       onChange={handleChange}
       placeholder="Start typing"
-      className="w-[500px] text-lg py-6 mt-12 rounded-xl text-white placeholder:text-white bg-white/10 shadow-xl border-none"
+      className="md:w-[500px] w-[80%] md:text-lg md:py-6 mt-12 rounded-xl text-white placeholder:text-white bg-white/10 shadow-xl border-none"
     />
   );
 }

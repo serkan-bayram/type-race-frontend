@@ -21,7 +21,10 @@ export function StartGame() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="absolute bottom-12 left-12">
+    <form
+      onSubmit={handleSubmit}
+      className="absolute -translate-x-1/2 bottom-12 md:translate-x-0 md:left-12 left-1/2"
+    >
       <Button variant={"secondary"}>Oyunu Başlat</Button>
     </form>
   );
