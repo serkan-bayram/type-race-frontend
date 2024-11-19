@@ -7,7 +7,7 @@ type Room = {
   roomId: string;
   secondsLeft: number;
   status?: GameStatus;
-  users: { userName: string; id: string; isCreator: boolean }[];
+  users: { userName: string; id: string; isCreator: boolean; WPM: number }[];
 };
 
 export function useRoomSocket() {

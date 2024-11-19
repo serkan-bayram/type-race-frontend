@@ -1,5 +1,5 @@
 import "@/index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FadeOutBox } from "@/components/fade-out-box";
 import { WordsContainer } from "@/components/words-container";
 import { CreateRoom } from "@/components/create-room";
@@ -9,6 +9,7 @@ import { JoinRoom } from "@/components/join-room";
 import { GameInfo } from "@/components/game-info";
 import { StartGame } from "@/components/start-game";
 import { WordInput } from "@/components/word-input";
+import { useParams } from "react-router-dom";
 
 export default function Root() {
   const wordsList = [
@@ -46,6 +47,12 @@ export default function Root() {
 
   const [history, setHistory] = useState([""]);
 
+  const { roomId } = useParams();
+
+  useEffect(() => {
+    setHistory([""]);
+  }, [roomId]);
+
   return (
     <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
       <div className="absolute flex items-center top-12 left-12 gap-x-6">
@@ -54,7 +61,7 @@ export default function Root() {
       </div>
       <RoomInfo />
 
-      <GameInfo />
+      <GameInfo history={history} wordsList={wordsList} />
 
       <div className="flex w-[40%] h-16 overflow-x-hidden">
         <FadeOutBox direction="bg-gradient-to-r" />

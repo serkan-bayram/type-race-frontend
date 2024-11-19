@@ -16,7 +16,7 @@ export function RoomUsers() {
           >
             <div className="">{user.userName}</div>
             <div className="flex items-center justify-center flex-1 text-xl text-white ">
-              24
+              {user.WPM}
             </div>
           </div>
         ))}
