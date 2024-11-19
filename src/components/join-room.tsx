@@ -9,12 +9,10 @@ import { FormEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { socket } from "@/socket";
-import { toast } from "sonner";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useJoinGameSocket } from "@/hooks";
 
 export function JoinRoom() {
-  const navigate = useNavigate();
-
   const { roomId } = useParams();
   const [open, setOpen] = useState(!!roomId ? socket.disconnected : false);
 
@@ -35,18 +33,10 @@ export function JoinRoom() {
     socket.connect();
     socket.emit("joinRoom", { userName: userName, roomId: roomId });
 
-    socket.on("joinRoom", (response) => {
-      if (response !== "Success") {
-        toast.error(response);
-        navigate("/");
-        return;
-      }
-
-      navigate(`/${roomId}`);
-    });
-
     setOpen(false);
   };
+
+  useJoinGameSocket();
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>

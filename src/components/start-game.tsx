@@ -1,10 +1,11 @@
 import { FormEvent } from "react";
 import { Button } from "./ui/button";
-import { useRoomSocket } from "@/hooks";
+import { useRoomSocket, useStartGameSocket } from "@/hooks";
 import { socket } from "@/socket";
-import { toast } from "sonner";
 
 export function StartGame() {
+  useStartGameSocket();
+
   const { room } = useRoomSocket();
 
   if (!room) return null;
@@ -17,13 +18,6 @@ export function StartGame() {
     e.preventDefault();
 
     socket.emit("startGame", { roomId: room.roomId });
-
-    socket.on("startGame", (response) => {
-      if (response !== "Success") {
-        toast.error(response);
-        return;
-      }
-    });
   };
 
   return (

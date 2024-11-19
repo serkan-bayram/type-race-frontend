@@ -1,6 +1,7 @@
-import { useRoomSocket } from "@/hooks";
+import { User, useRoomSocket } from "@/hooks";
 import { socket } from "@/socket";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export function Timer() {
   const { room } = useRoomSocket();
@@ -15,7 +16,19 @@ export function Timer() {
   );
 }
 
-export function Score({ WPM }: { WPM: number }) {
+export function Score({
+  WPM,
+  winner,
+}: {
+  WPM: number;
+  winner: User | undefined;
+}) {
+  useEffect(() => {
+    if (winner) {
+      toast.success(`Winner is ${winner.userName} with ${winner.WPM} WPM!`);
+    }
+  }, []);
+
   return (
     <>
       <div className="text-2xl">{WPM}</div>
@@ -34,6 +47,8 @@ export function GameInfo({
   const { room } = useRoomSocket();
 
   const [WPM, setWPM] = useState(0);
+
+  const winner = room?.users.sort((a, b) => b.WPM - a.WPM)[0];
 
   useEffect(() => {
     const grossWPM =
@@ -65,7 +80,7 @@ export function GameInfo({
   return (
     <div className="absolute flex flex-col items-center justify-center text-white font-custom-noto top-36">
       {room?.status === "started" && <Timer />}
-      {room?.status === "finished" && <Score WPM={WPM} />}
+      {room?.status === "finished" && <Score winner={winner} WPM={WPM} />}
     </div>
   );
 }
