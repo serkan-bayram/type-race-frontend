@@ -11,7 +11,7 @@ export function Timer() {
   return (
     <>
       <div className="text-2xl font-semibold">{room.secondsLeft}</div>
-      <div>saniye kaldı</div>
+      <div>seconds left</div>
     </>
   );
 }
