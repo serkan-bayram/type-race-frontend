@@ -34,7 +34,7 @@ export default function Root() {
     );
 
   return (
-    <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
+    <div className="font-custom-noto w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
       <div className="absolute flex items-center top-12 left-12 gap-x-6">
         <CreateRoom />
         <JoinRoom />

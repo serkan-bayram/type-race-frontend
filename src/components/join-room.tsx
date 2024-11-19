@@ -38,6 +38,7 @@ export function JoinRoom() {
     socket.on("joinRoom", (response) => {
       if (response !== "Success") {
         toast.error(response);
+        navigate("/");
         return;
       }
 
@@ -56,7 +57,9 @@ export function JoinRoom() {
       </DialogTrigger>
       <DialogContent className="max-w-[400px]">
         <DialogHeader>
-          <DialogTitle className="mb-2">Enter a room number</DialogTitle>
+          <DialogTitle className="mb-2 font-custom-noto">
+            Enter a room number
+          </DialogTitle>
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
@@ -64,11 +67,13 @@ export function JoinRoom() {
             name="room-id"
             defaultValue={roomId}
             placeholder="Room number"
+            className="font-custom-noto"
           />
           <Input
             required
             name="user-name"
             defaultValue={localStorage.getItem("userName") || ""}
+            className="font-custom-noto"
             placeholder="Username"
           />
 

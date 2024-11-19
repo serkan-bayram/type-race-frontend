@@ -46,11 +46,14 @@ export function CreateRoom() {
       </DialogTrigger>
       <DialogContent className="max-w-[400px]">
         <DialogHeader>
-          <DialogTitle className="mb-2">Enter a username</DialogTitle>
+          <DialogTitle className="mb-2 font-custom-noto">
+            Enter a username
+          </DialogTitle>
         </DialogHeader>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
             required
+            className="font-custom-noto"
             name="user-name"
             defaultValue={localStorage.getItem("userName") || ""}
             placeholder="Username"
