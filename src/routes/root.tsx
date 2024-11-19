@@ -10,40 +10,13 @@ import { GameInfo } from "@/components/game-info";
 import { StartGame } from "@/components/start-game";
 import { WordInput } from "@/components/word-input";
 import { useParams } from "react-router-dom";
+import { useWords } from "@/hooks";
+import { LoaderCircleIcon } from "lucide-react";
 
 export default function Root() {
-  const wordsList = [
-    "merhaba",
-    "elma",
-    "kitap",
-    "kalem",
-    "dostluk",
-    "sevgi",
-    "deniz",
-    "güneş",
-    "ay",
-    "yıldız",
-    "çay",
-    "kahve",
-    "aile",
-    "okul",
-    "bahçe",
-    "sokak",
-    "şehir",
-    "dağ",
-    "ormam",
-    "göl",
-    "kuş",
-    "göz",
-    "mutluluk",
-    "huzur",
-    "rüya",
-    "çocuk",
-    "ev",
-    "masa",
-    "sandık",
-    "zaman",
-  ];
+  const { data } = useWords();
+
+  const wordsList = data?.data.words as string[];
 
   const [history, setHistory] = useState([""]);
 
@@ -52,6 +25,13 @@ export default function Root() {
   useEffect(() => {
     setHistory([""]);
   }, [roomId]);
+
+  if (!wordsList)
+    return (
+      <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
+        <LoaderCircleIcon className="w-12 h-12 animate-spin" color="white" />
+      </div>
+    );
 
   return (
     <div className="w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
@@ -63,7 +43,7 @@ export default function Root() {
 
       <GameInfo history={history} wordsList={wordsList} />
 
-      <div className="flex w-[40%] h-16 overflow-x-hidden">
+      <div className="flex w-[60%] h-16 overflow-x-hidden">
         <FadeOutBox direction="bg-gradient-to-r" />
 
         <WordsContainer history={history} wordsList={wordsList} />

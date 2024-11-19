@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { socket } from "./socket";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+axios.defaults.baseURL = `${import.meta.env.VITE_API_URL}`;
 
 type Room = {
   roomId: string;
@@ -16,4 +20,11 @@ export function useRoomSocket() {
   });
 
   return { room, setRoom };
+}
+
+export function useWords() {
+  return useQuery({
+    queryKey: ["words"],
+    queryFn: () => axios.get("/words/turkish"),
+  });
 }
