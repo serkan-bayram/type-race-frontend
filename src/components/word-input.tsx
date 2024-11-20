@@ -1,4 +1,11 @@
-import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  KeyboardEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+} from "react";
 import { Input } from "./ui/input";
 import { useRoomSocket } from "@/hooks";
 import { toast } from "sonner";
@@ -13,6 +20,14 @@ export function WordInput({
   wordsList: string[];
 }) {
   const { room } = useRoomSocket();
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (room?.status === "started") {
+      inputRef.current?.focus();
+    }
+  }, [room?.status]);
 
   const historyLastIndex = history.length - 1;
 
@@ -70,6 +85,7 @@ export function WordInput({
 
   return (
     <Input
+      ref={inputRef}
       onMouseOver={handleMouseOver}
       disabled={room?.status !== "started"}
       value={history[historyLastIndex]}

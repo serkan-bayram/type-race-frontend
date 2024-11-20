@@ -49,7 +49,7 @@ export default function Root() {
           <JoinRoom />
           <Link
             to="/scoreboard"
-            className="text-sm font-semibold text-center underline-offset-4 hover:underline"
+            className="text-sm text-center underline-offset-4 hover:underline"
           >
             Scoreboard
           </Link>
@@ -63,7 +63,7 @@ export default function Root() {
         </div>
         <Link
           to="/scoreboard"
-          className="text-sm font-semibold text-white underline-offset-4 hover:underline"
+          className="text-sm text-white underline-offset-4 hover:underline"
         >
           Scoreboard
         </Link>
