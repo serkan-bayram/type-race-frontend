@@ -17,7 +17,7 @@ export function RoomInfo() {
   };
 
   return (
-    <div className="absolute flex flex-col p-4 py-2 text-white shadow-xl gap-y-2 font-custom-noto rounded-xl bg-white/10 md:right-12 md:top-12 md:left-auto left-4 top-12 max-w-48">
+    <div className="absolute flex flex-col p-4 py-2 text-white shadow-xl gap-y-2 font-custom-noto rounded-xl bg-white/10 sm:right-12 sm:top-12 sm:left-auto left-4 top-12 max-w-48">
       <div className="text-xs font-semibold">Room number</div>
       <button
         onClick={handleCopy}

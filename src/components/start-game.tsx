@@ -23,7 +23,7 @@ export function StartGame() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="absolute -translate-x-1/2 bottom-12 md:translate-x-0 md:left-12 left-1/2"
+      className="absolute -translate-x-1/2 bottom-12 sm:translate-x-0 sm:left-12 left-1/2"
     >
       <Button variant={"secondary"}>Start Game</Button>
     </form>

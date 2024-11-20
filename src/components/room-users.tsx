@@ -8,9 +8,9 @@ export function RoomUsers() {
   if (!room) return null;
 
   return (
-    <div className="absolute flex flex-col items-center justify-center gap-8 bottom-32 font-custom-noto max-w-[70%]">
+    <div className="flex flex-col items-center justify-center gap-8 font-custom-noto max-w-[70%]">
       <div className="text-xl font-bold text-white">Players</div>
-      <div className="flex max-w-full gap-12 pb-4 overflow-x-auto">
+      <div className="flex max-w-full overflow-x-auto gap-x-12">
         {room?.users.map((user) => (
           <div
             key={user.id}

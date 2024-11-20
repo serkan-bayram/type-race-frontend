@@ -41,7 +41,7 @@ export function JoinRoom() {
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-        <Button className="text-black md:text-white" variant={"link"}>
+        <Button className="text-black sm:text-white" variant={"link"}>
           Join a Room
         </Button>
       </DialogTrigger>

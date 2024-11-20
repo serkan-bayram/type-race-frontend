@@ -41,40 +41,48 @@ export default function Root() {
   return (
     <div className="font-custom-noto w-full min-h-[100dvh] bg-[#0C0C0C] flex flex-col items-center justify-center">
       <Popover>
-        <PopoverTrigger className="absolute text-white md:hidden top-12 right-4">
+        <PopoverTrigger className="absolute text-white sm:hidden top-12 right-4">
           <Menu />
         </PopoverTrigger>
-        <PopoverContent className="flex flex-col gap-y-4 md:hidden">
+        <PopoverContent className="flex flex-col gap-y-4 sm:hidden">
           <CreateRoom />
           <JoinRoom />
         </PopoverContent>
       </Popover>
 
-      <div className="absolute items-center hidden md:flex top-12 left-12 gap-x-6">
+      <div className="absolute items-center hidden sm:flex top-12 left-12 gap-x-6">
         <CreateRoom />
         <JoinRoom />
       </div>
       <RoomInfo />
 
-      <GameInfo history={history} wordsList={wordsList} />
+      <div className="flex flex-col items-center flex-1 w-full md:w-2/3 justify-evenly">
+        <div className="flex items-end justify-center h-64 sm:items-center">
+          <GameInfo history={history} wordsList={wordsList} />
+        </div>
 
-      <div className="flex w-[60%] h-16 overflow-x-hidden">
-        <FadeOutBox direction="bg-gradient-to-r" />
+        <div className="flex sm:w-[600px]  w-full flex-1 flex-col items-center justify-center ">
+          <div className="flex w-full h-16 overflow-x-hidden ">
+            <FadeOutBox direction="bg-gradient-to-r" />
 
-        <WordsContainer history={history} wordsList={wordsList} />
+            <WordsContainer history={history} wordsList={wordsList} />
 
-        <FadeOutBox direction="bg-gradient-to-l" />
+            <FadeOutBox direction="bg-gradient-to-l" />
+          </div>
+
+          <WordInput
+            history={history}
+            setHistory={setHistory}
+            wordsList={wordsList}
+          />
+        </div>
+
+        <div className="flex items-center justify-center w-full h-64 ">
+          <RoomUsers />
+        </div>
       </div>
 
-      <WordInput
-        history={history}
-        setHistory={setHistory}
-        wordsList={wordsList}
-      />
-
       <StartGame />
-
-      <RoomUsers />
     </div>
   );
 }

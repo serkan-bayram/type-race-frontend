@@ -77,8 +77,10 @@ export function GameInfo({
     socket.emit("type", { WPM: netWPM, roomId: room?.roomId });
   }, [history]);
 
+  if (!room?.status) return null;
+
   return (
-    <div className="absolute flex flex-col items-center justify-center text-white font-custom-noto top-36">
+    <div className="flex flex-col items-center justify-center text-white font-custom-noto">
       {room?.status === "started" && <Timer />}
       {room?.status === "finished" && <Score winner={winner} WPM={WPM} />}
     </div>
