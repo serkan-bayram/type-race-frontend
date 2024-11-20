@@ -17,14 +17,11 @@ import { WordInput } from "@/components/word-input";
 import { useParams } from "react-router-dom";
 import { useWords } from "@/hooks";
 import { LoaderCircleIcon, Menu } from "lucide-react";
-import { Language } from "@/components/language";
 
 export default function Root() {
   const { data } = useWords();
 
   const wordsList = data?.data.words as string[];
-
-  console.log(wordsList?.splice(0, 5));
 
   const [history, setHistory] = useState([""]);
 
@@ -86,8 +83,6 @@ export default function Root() {
       </div>
 
       <StartGame />
-
-      <Language />
     </div>
   );
 }

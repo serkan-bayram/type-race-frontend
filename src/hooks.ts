@@ -17,6 +17,7 @@ export type User = {
 type Room = {
   roomId: string;
   secondsLeft: number;
+  language: string;
   status?: "started" | "finished";
   users: User[];
 };
@@ -83,12 +84,15 @@ export function useJoinGameSocket() {
 }
 
 export function useWords() {
-  const language = localStorage.getItem("language");
+  const { room } = useRoomSocket();
 
-  const query = language === "turkish" ? "/words/turkish" : "/words/english";
+  let language = room?.language
+    ? room.language
+    : localStorage.getItem("language") || "turkish";
 
   return useQuery({
+    staleTime: Infinity,
     queryKey: ["words", language],
-    queryFn: () => axios.get(query),
+    queryFn: () => axios.get(`/words/${language}`),
   });
 }

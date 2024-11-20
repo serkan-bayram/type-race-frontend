@@ -10,6 +10,7 @@ import { Input } from "./ui/input";
 import { FormEvent, useState } from "react";
 import { socket } from "@/socket";
 import { useNavigate } from "react-router-dom";
+import { Language } from "./language";
 
 export function CreateRoom() {
   const [open, setOpen] = useState(false);
@@ -21,15 +22,17 @@ export function CreateRoom() {
 
     const formData = new FormData(e.currentTarget);
     const userName = formData.get("user-name");
+    const language = formData.get("language");
 
-    if (!userName) return;
+    if (!userName || !language) return;
 
     localStorage.setItem("userName", userName.toString());
+    localStorage.setItem("language", language.toString());
 
     // Connect to websocket and send your userName
     socket.disconnect();
     socket.connect();
-    socket.emit("createRoom", { userName: userName });
+    socket.emit("createRoom", { userName: userName, language: language });
 
     // Navigate to roomId when room is created
     socket.on("createRoom", (roomId) => {
@@ -58,6 +61,11 @@ export function CreateRoom() {
             defaultValue={localStorage.getItem("userName") || ""}
             placeholder="Username"
           />
+
+          <div className="flex items-center justify-between text-sm font-custom-noto">
+            Room Language:
+            <Language />
+          </div>
 
           <Button>Continue</Button>
         </form>
