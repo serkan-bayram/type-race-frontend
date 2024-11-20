@@ -14,7 +14,7 @@ import { JoinRoom } from "@/components/join-room";
 import { GameInfo } from "@/components/game-info";
 import { StartGame } from "@/components/start-game";
 import { WordInput } from "@/components/word-input";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useWords } from "@/hooks";
 import { LoaderCircleIcon, Menu } from "lucide-react";
 
@@ -47,16 +47,30 @@ export default function Root() {
         <PopoverContent className="flex flex-col gap-y-4 sm:hidden">
           <CreateRoom />
           <JoinRoom />
+          <Link
+            to="/scoreboard"
+            className="text-sm font-semibold text-center underline-offset-4 hover:underline"
+          >
+            Scoreboard
+          </Link>
         </PopoverContent>
       </Popover>
 
-      <div className="absolute items-center hidden sm:flex top-12 left-12 gap-x-6">
-        <CreateRoom />
-        <JoinRoom />
+      <div className="absolute items-start hidden gap-4 sm:flex sm:flex-col top-12 left-12 gap-x-6">
+        <div>
+          <CreateRoom />
+          <JoinRoom />
+        </div>
+        <Link
+          to="/scoreboard"
+          className="text-sm font-semibold text-white underline-offset-4 hover:underline"
+        >
+          Scoreboard
+        </Link>
       </div>
       <RoomInfo />
 
-      <div className="flex flex-col items-center flex-1 w-full md:w-2/3 justify-evenly">
+      <div className="flex flex-col items-center flex-1 w-full px-4 sm:px-0 md:w-2/3 justify-evenly">
         <div className="flex items-end justify-center h-64 sm:items-center">
           <GameInfo history={history} wordsList={wordsList} />
         </div>

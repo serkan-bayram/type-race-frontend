@@ -1,7 +1,7 @@
 import { socket } from "@/socket";
 import copy from "copy-to-clipboard";
 import { ClipboardIcon } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export function RoomInfo() {
@@ -28,12 +28,6 @@ export function RoomInfo() {
         </div>
         <ClipboardIcon className="w-10" />
       </button>
-
-      <div className="h-[1px] bg-white/20 w-full"></div>
-
-      <Link className="text-sm text-center" to={"/scoreboard"}>
-        Go to Scoreboard
-      </Link>
     </div>
   );
 }
