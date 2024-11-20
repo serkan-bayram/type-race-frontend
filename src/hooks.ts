@@ -83,8 +83,12 @@ export function useJoinGameSocket() {
 }
 
 export function useWords() {
+  const language = localStorage.getItem("language");
+
+  const query = language === "turkish" ? "/words/turkish" : "/words/english";
+
   return useQuery({
-    queryKey: ["words"],
-    queryFn: () => axios.get("/words/turkish"),
+    queryKey: ["words", language],
+    queryFn: () => axios.get(query),
   });
 }
