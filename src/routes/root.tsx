@@ -77,7 +77,7 @@ export default function Root() {
           />
         </div>
 
-        <div className="flex items-center justify-center w-full h-64 ">
+        <div className="flex items-start justify-center w-full h-64 ">
           <RoomUsers />
         </div>
       </div>
