@@ -14,7 +14,7 @@ import { JoinRoom } from "@/components/join-room";
 import { GameInfo } from "@/components/game-info";
 import { StartGame } from "@/components/start-game";
 import { WordInput } from "@/components/word-input";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useWords } from "@/hooks";
 import { LoaderCircleIcon, Menu } from "lucide-react";
 
@@ -47,12 +47,12 @@ export default function Root() {
         <PopoverContent className="flex flex-col gap-y-4 sm:hidden">
           <CreateRoom />
           <JoinRoom />
-          <Link
+          {/* <Link
             to="/scoreboard"
             className="text-sm text-center underline-offset-4 hover:underline"
           >
             Scoreboard
-          </Link>
+          </Link> */}
         </PopoverContent>
       </Popover>
 
@@ -61,12 +61,12 @@ export default function Root() {
           <CreateRoom />
           <JoinRoom />
         </div>
-        <Link
+        {/* <Link
           to="/scoreboard"
           className="text-sm text-white underline-offset-4 hover:underline"
         >
           Scoreboard
-        </Link>
+        </Link> */}
       </div>
       <RoomInfo />
 
